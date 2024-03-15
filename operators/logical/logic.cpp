@@ -3,6 +3,8 @@
 //
 
 #include "logic.h"
+#include "../../rational/rational.h"
+
 
 // Перегрузка оператора меньше (<)
 bool Rational::operator <(const Rational& other) const {
@@ -48,3 +50,4 @@ bool Rational::operator <(long long value) const {
 bool Rational::operator>(long long value) const {
     return (numer > value * denom);
 }
+

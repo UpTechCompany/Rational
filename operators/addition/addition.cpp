@@ -15,8 +15,14 @@ Rational& Rational::operator+=(const Rational& other) {
     return *this;
 }
 
-Rational Rational::operator+(long long value) const {
-    int num = numerator * value;
-    return Rational(num, denominator);
+Rational Rational::operator +(long long value) const {
+    int num = Rational::isLongLongRange(numer + denom * value);
+    return Rational(num, denom);
+}
+
+// Перегрузка оператора +=
+Rational& Rational::operator +=(long long value) {
+    numer += value * denom;
+    return *this;
 }
 

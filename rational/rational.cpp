@@ -36,8 +36,8 @@ Rational::Rational(long long _number) {
 }
 
 Rational::Rational(const Rational &numerator, const Rational &denominator) {
-    this -> numer = numerator.numer * denominator.denom;
-    this -> denom = numerator.denom * denominator.numer;
+    this -> numer = isLongLongRange(numerator.numer * denominator.denom);
+    this -> denom = isLongLongRange(numerator.denom * denominator.numer);
     simplify();
 }
 
@@ -54,14 +54,14 @@ Rational::Rational(const Rational& rational) {
 }
 
 Rational::Rational(Rational rational, long long number){
-    numer = number * rational.denom + rational.numer;
-    denom = number * rational.denom + rational.denom;
+    numer = isLongLongRange(number * rational.denom + rational.numer);
+    denom = isLongLongRange(number * rational.denom + rational.denom);
     simplify();
 }
 
 Rational::Rational(int number, Rational rational){
-    numer = number * rational.denom + rational.numer;
-    denom = number * rational.denom + rational.denom;
+    numer = isLongLongRange(number * rational.denom + rational.numer);
+    denom = isLongLongRange(number * rational.denom + rational.denom);
     simplify();
 }
 
@@ -79,10 +79,10 @@ long long NSD (long long a, long long b){
 
 }
 
-void Rational::simplify(){
+void Rational::simplify() {
     long long nod;
 
-    if (denom < 0){
+    if (denom < 0) {
         numer = -numer;
         denom = -denom;
     } else {
@@ -92,54 +92,4 @@ void Rational::simplify(){
             denom /= nod;
         }
     }
-}
-
-double tgamma(double x) {
-    if (x <= 0.0) {
-        throw std::invalid_argument("Gamma function is not defined for non-positive real numbers.");
-    }
-
-    // Интеграл для приближенного вычисления гамма-функции
-    // Здесь используется метод Симпсона для вычисления интеграла
-    double integral = 0.0;
-    double delta = 0.0001; // Шаг интегрирования
-
-    for (double t = delta; t < x; t += delta) {
-        double term = (t - delta / 2) * exp(-t);
-        integral += 2 * term + 4 * exp(-t - delta / 2);
-    }
-
-    integral *= delta / 6;
-
-    return integral * exp(-x);
-}
-
-// Метод для вычисления факториала
-double factorial(long long n) {
-    if (n < 0) {
-        throw std::invalid_argument("Factorial is not defined for negative numbers.");
-    }
-
-    long double result = 1.0;
-    for (int i = 1; i <= n; ++i) {
-        result *= i;
-    }
-    return result;
-}
-
-// Метод для вычисления квадратного корня с помощью метода Ньютона
-Rational Rational::sqrt(int a, int iterations) {
-    Rational xn(1);
-    for (int i = 0; i < iterations; ++i) {
-        Rational temp(xn);
-
-        // При вычислении xn+1 используем числитель и знаменатель xn в явном виде
-        xn = Rational(1, a) * (Rational(a - 1) * xn + Rational(*this, xn ^ (a - 1)));
-        xn.simplify();
-
-        // Если новое приближение не изменилось (достигнута точность вычисления), выходим из цикла
-        if (xn / Rational(10000, 1) == temp / Rational(10000, 1))
-            break;
-    }
-    return  Rational(xn);
 }

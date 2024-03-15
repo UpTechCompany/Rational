@@ -6,7 +6,8 @@
 #define RATIONAL_RATIONAL_H
 
 #include <iostream>
-#include "../operators/addition/addition.h"
+#include "rational.h"
+#include <cmath>
 
 class Rational {
 private:
@@ -15,6 +16,7 @@ private:
     long long denom;
 
 public:
+
     Rational();
 
     explicit Rational(const Rational &numerator, const Rational &denominator);
@@ -35,8 +37,6 @@ public:
     long long getDenominator() const;
 
     void simplify();
-
-    Rational sqrt(int a, int iterations = 4);
 
     Rational& operator =(const Rational &number);
     bool operator ==(const Rational& number) const;
@@ -75,6 +75,9 @@ public:
 
     Rational& operator-=(long long value);
     Rational operator-(long long value) const;
+
+    Rational operator +(long long value) const;
+    Rational& operator +=(long long value);
 
     bool operator==(long long value) const;
     bool operator<=(long long value) const;
@@ -115,9 +118,29 @@ public:
         return Rational(denom, numer);
     }
 
+    long long isLongLongRange(long long value) const {
+        if (value >= std::numeric_limits<long long>::min() && value <= std::numeric_limits<long long>::max()){
+            return value;
+        } else {
+            throw "Overflow";
+        }
+    };
 
+    long double sqrts() {
+        long long p = numer;
+        long long q = denom;
+        long double x0 = sqrt(static_cast<long double>(p) / q); // начальное приближение
+        long double x = x0;
+
+        for (int i = 0; i < 4; ++i) {
+            x = 0.5L * (x + p / (q * x)); // метод последовательных приближений
+        }
+
+        return x;
+    };
 
 
 };
+
 
 #endif //RATIONAL_RATIONAL_H
