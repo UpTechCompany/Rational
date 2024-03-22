@@ -13,9 +13,6 @@ private:
     T* array; // Указатель на первый элемент массива
     size_t capacity; // Размер выделенной памяти
     size_t size; // Текущий размер вектора
-    T sum; // Сумма элементов
-    double average; // Среднее значение элементов
-    bool isSumAverageValid; // Флаг, указывающий, были ли вычислены сумма и среднее
 
 
 public:
@@ -36,17 +33,6 @@ public:
         if (size >= capacity) {
             reserve(capacity == 0 ? 1 : capacity * 2);
         }
-        // Обновляем сумму и среднее
-        if (isSumAverageValid) {
-            sum += value;
-            average = static_cast<double>(sum) / size;
-        }
-        else {
-            sum = value;
-            average = value;
-            isSumAverageValid = true;
-        }
-        // Добавляем элемент в конец
         array[size++] = value;
     }
 
@@ -67,10 +53,12 @@ public:
         if (index > size) {
             throw std::out_of_range("Index out of range");
         }
+
         // Если массив уже заполнен, увеличиваем его размер вдвое
         if (size >= capacity) {
             reserve(capacity == 0 ? 1 : capacity * 2);
         }
+
         // Сдвигаем элементы вправо начиная с конца массива до индекса
         for (size_t i = size; i > index; --i) {
             array[i] = array[i - 1];
@@ -79,11 +67,11 @@ public:
         ++size;
     }
 
-    // Оператор обращения по индексу
-    T& operator[](size_t index) {
+    const T& operator[](size_t index) const {
         if (index >= size) {
             throw std::out_of_range("Index out of range");
         }
+
         return *(array + index);
     }
 
@@ -119,36 +107,36 @@ public:
         return out;
     }
 
-    // Метод получения суммы элементов вектора
-    T getSum() const {
-        if (!isSumAverageValid) {
-            throw std::logic_error("Sum and average are not calculated.");
-        }
-        return sum;
-    }
-
-    // Метод получения среднего значения элементов вектора
-    double getAverage() const {
-        if (!isSumAverageValid) {
-            throw std::logic_error("Sum and average are not calculated.");
-        }
-        return average;
-    }
-
-    // Метод вычисления медианы вектора
-    double getMedian() const {
-        if (size == 0) {
-            throw std::logic_error("Vector is empty.");
-        }
-        Vector<T> temp(*this);
-        std::sort(temp.array, temp.array + temp.size);
-        if (size % 2 == 0) {
-            return static_cast<double>((temp.array[size / 2 - 1] + temp.array[size / 2])) / 2;
-        }
-        else {
-            return temp.array[size / 2];
-        }
-    }
+//    // Метод получения суммы элементов вектора
+//    T getSum() const {
+//        if (!isSumAverageValid) {
+//            throw std::logic_error("Sum and average are not calculated.");
+//        }
+//        return sum;
+//    }
+//
+//    // Метод получения среднего значения элементов вектора
+//    double getAverage() const {
+//        if (!isSumAverageValid) {
+//            throw std::logic_error("Sum and average are not calculated.");
+//        }
+//        return average;
+//    }
+//
+//    // Метод вычисления медианы вектора
+//    double getMedian() const {
+//        if (size == 0) {
+//            throw std::logic_error("Vector is empty.");
+//        }
+//        Vector<T> temp(*this);
+//        std::sort(temp.array, temp.array + temp.size);
+//        if (size % 2 == 0) {
+//            return static_cast<double>((temp.array[size / 2 - 1] + temp.array[size / 2])) / 2;
+//        }
+//        else {
+//            return temp.array[size / 2];
+//        }
+//    }
 
 };
 

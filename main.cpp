@@ -1,6 +1,7 @@
 #include <iostream>
 #include "rational/rational.h"
 #include "vector/vector.h"
+#include "LineList/linelist.h"
 
 int falavelas_algorithm(Vector<int>& warriors, int poison) {
     int remaining_warriors = warriors.getSize();
@@ -17,59 +18,59 @@ int falavelas_algorithm(Vector<int>& warriors, int poison) {
 }
 
 
-int main() {
-    int num_warriors = 666666;
-    int poison_step = 16;
-
-    // Создаем вектор воинов с номерами от 1 до num_warriors
-    Vector<int> warriors;
-    for (int i = 1; i <= num_warriors; ++i) {
-        warriors.push_back(i);
-    }
-
-    //std::cout << "Воины: " << warriors << std::endl;
-
-    // Решаем задачу Фалавеля
-    int last_survivor = falavelas_algorithm(warriors, poison_step);
-
-    std::cout << "Последний выживший воин: " << last_survivor << std::endl;
-
-
-    // Создаем вектор с начальным размером 5
-    Vector<int> vec;
-
-    // Добавляем элементы в конец вектора
-    for (int i = 1; i <= 5; ++i) {
-        vec.push_back(i);
-    }
-
-    // Выводим элементы вектора
-    std::cout << "Элементы вектора: ";
-    std::cout << vec << " ";
-    std::cout << std::endl;
-
-    // Добавляем элемент в середину вектора
-    vec.insert(2, 100);
-
-    // Выводим элементы вектора после вставки
-    std::cout << "Элементы вектора после вставки: ";
-    std::cout << vec << " ";
-    std::cout << std::endl;
-
-    // Удаляем элемент из вектора
-    vec.erase(4);
-
-    // Выводим элементы вектора после удаления
-    std::cout << "Элементы вектора после удаления: ";
-    std::cout << vec << " ";
-    std::cout << std::endl;
-
-    std::cout << "Сумма: " << vec.getSum() << std::endl;
-    std::cout << "Среднее: " << vec.getAverage() << std::endl;
-    std::cout << "Медиана: " << vec.getMedian() << std::endl;
-
-    return 0;
-}
+//int main() {
+//    int num_warriors = 666666;
+//    int poison_step = 16;
+//
+//    // Создаем вектор воинов с номерами от 1 до num_warriors
+//    Vector<int> warriors;
+//    for (int i = 1; i <= num_warriors; ++i) {
+//        warriors.push_back(i);
+//    }
+//
+//    //std::cout << "Воины: " << warriors << std::endl;
+//
+//    // Решаем задачу Фалавеля
+//    int last_survivor = falavelas_algorithm(warriors, poison_step);
+//
+//    std::cout << "Последний выживший воин: " << last_survivor << std::endl;
+//
+//
+//    // Создаем вектор с начальным размером 5
+//    Vector<int> vec;
+//
+//    // Добавляем элементы в конец вектора
+//    for (int i = 1; i <= 5; ++i) {
+//        vec.push_back(i);
+//    }
+//
+//    // Выводим элементы вектора
+//    std::cout << "Элементы вектора: ";
+//    std::cout << vec << " ";
+//    std::cout << std::endl;
+//
+//    // Добавляем элемент в середину вектора
+//    vec.insert(2, 100);
+//
+//    // Выводим элементы вектора после вставки
+//    std::cout << "Элементы вектора после вставки: ";
+//    std::cout << vec << " ";
+//    std::cout << std::endl;
+//
+//    // Удаляем элемент из вектора
+//    vec.erase(4);
+//
+//    // Выводим элементы вектора после удаления
+//    std::cout << "Элементы вектора после удаления: ";
+//    std::cout << vec << " ";
+//    std::cout << std::endl;
+//
+//    std::cout << "Сумма: " << vec.getSum() << std::endl;
+//    std::cout << "Среднее: " << vec.getAverage() << std::endl;
+//    std::cout << "Медиана: " << vec.getMedian() << std::endl;
+//
+//    return 0;
+//}
 //int main() {
 //    Rational p(1,2);
 //    std::cout << p.sqrts() << " ";
@@ -78,3 +79,37 @@ int main() {
 //    std::cout << rat.sqrt(2);
 //    return 0;
 //}
+
+#include <iostream>
+#include <string>
+#include "LineList/linelist.h"
+
+void josephus(int n, int k) {
+    CircularBuffer circle(n);
+
+    int index = 0;
+    for (int i = 0; i < n - 1; ++i) {
+        index = circle.next(index, k - 1);
+        circle.remove(index);
+    }
+
+    circle.display();
+}
+
+int main() {
+    int n = 10000000; // Количество человек в круге
+    int k = 10; // Шаг для удаления
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    josephus(n, k);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
+
+    return 0;
+}
+
+
